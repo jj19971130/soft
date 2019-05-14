@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="soft:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/soft_Web</output-path>
+    <root id="archive" name="soft_Web.war">
+      <element id="artifact" artifact-name="soft:Web exploded" />
+    </root>
+  </artifact>
+</component>
