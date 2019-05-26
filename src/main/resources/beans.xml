@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/context"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="client" class="org.elasticsearch.client.RestHighLevelClient">
+        <constructor-arg ref="builder"/>
+    </bean>
+
+    <bean id="builder" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="org.elasticsearch.client.RestClient"/>
+        <property name="targetMethod" value="builder"/>
+        <property name="arguments" ref="host"/>
+    </bean>
+
+    <bean id="host" class="org.apache.http.HttpHost">
+        <constructor-arg value="10.128.3.233"/>
+        <constructor-arg value="9200"/>
+        <constructor-arg value="http"/>
+    </bean>
+
+    <mvc:component-scan base-package="buaa.jj.es"/>
+</beans>
