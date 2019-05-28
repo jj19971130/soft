@@ -1,6 +1,6 @@
 package buaa.jj.es;
 
-import com.ManageServices.service.PaperService;
+import com.ManageServices.service_interface.PaperService;
 import com.sun.org.apache.xerces.internal.xs.StringList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,6 +10,7 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,40 +37,34 @@ public class IndexRequestManager {
     @RequestMapping(value = "paper", method = RequestMethod.POST)
     public void addPapers(@RequestBody String body) throws IOException {
         //todo 调用数据库接口
+        body = new String(body.getBytes("iso-8859-1"),"utf-8");
         List<Map<String,Object>> paperList = (List<Map<String,Object>>) JSONArray.fromObject(body);
         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
         PaperService paperService = context.getBean(PaperService.class);
-        paperService.insertPaperByBatch(JSONArray.fromObject(body));
+        paperService.insert(JSONArray.fromObject(body));
         for (Map<String,Object> o:paperList) {
             IndexRequest request = new IndexRequest("papers").source(o);
-            client.indexAsync(request, RequestOptions.DEFAULT, new ActionListener<IndexResponse>() {
-                public void onResponse(IndexResponse indexResponse) {
-
-                }
-
-                public void onFailure(Exception e) {
-
-                }
-            });
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            System.out.println(JSONObject.fromObject(response).toString());
         }
     }
 
-    @RequestMapping(value = "expert", method = RequestMethod.POST)
-    public void addExpert(@RequestBody String body) {
+    @RequestMapping(value = "test",method = RequestMethod.POST)
+    public String test(@RequestBody String body) {
+        for (byte b:body.getBytes()) {
+            System.out.print(b + " ");
+        }
+        System.out.println(" ");
+        return body;
+    }
+
+    void addExpert(@RequestBody String body) throws IOException {
         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
         PaperService paperService = context.getBean(PaperService.class);
         List<Map<String,Object>> paperList = (List<Map<String,Object>>) JSONArray.fromObject(body);
         for (Map<String,Object> o:paperList) {
             IndexRequest request = new IndexRequest("experts").source(o);
-            client.indexAsync(request, RequestOptions.DEFAULT, new ActionListener<IndexResponse>() {
-                public void onResponse(IndexResponse indexResponse) {
-
-                }
-
-                public void onFailure(Exception e) {
-
-                }
-            });
+            client.index(request, RequestOptions.DEFAULT);
         }
     }
 }

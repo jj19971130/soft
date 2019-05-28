@@ -9,7 +9,7 @@
     <dubbo:registry address="zookeeper://10.128.3.233:2181"/>
     <dubbo:protocol name="dubbo" port="20879"/>
     
-    <dubbo:reference interface="com.ManageServices.service.PaperService" id="paperService" >
+    <dubbo:reference interface="com.ManageServices.service_interface.PaperService" id="paperService" >
         <dubbo:method name="insertPaperByBatch" async="true"/>
     </dubbo:reference>
 

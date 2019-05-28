@@ -9,8 +9,5 @@
         <module name="soft" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="soft" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -25,12 +25,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.IOException;
 
 public class test {
+
+    String s = "[{'title': 'ASP.NET AJAX框架研究及其在Web开发中的应用', 'summary': '随着Web技术的发展,越来越多ASP.NET应用程序中引入AJAX技术,以降低服务器负担和解决整页刷新带来的白屏问题。而微软推出的ASP.NET AJAX框架与ASP.NET 2.0编程模型无缝集成,可大大降低程序员开发AJAX程序的难度。首先介绍AJAX引擎原理和ASP.NET AJAX服务器端与客户端架构;继而阐述ASP.NET AJAX在Web站点中的配置方法;最后以工程机械远程定位监控系统的车辆监控模块为实例,引入AJAX功能以实现异步局部更新和定时刷新,从而为用户提供了友好的交互界面。', 'author': [{'name': '仰燕兰', 'organization': '东南大学自动化学院', 'field': '系统工程 地图制图学与地理信息工程'}, {'name': '金晓雪', 'organization': '东南大学自动化学院', 'field': '分布式与并行计算 计算机网络 软件工程 通信与信息系统'}, {'name': '叶桦', 'organization': '东南大学自动化研究所', 'field': '系统工程'}], 'keyword': ['AJAX', 'ASP.NET', 'AJAX', '远程定位监控系统', '异步局部更新', '定时刷新']}]";
     @Test
     void test1() throws IOException {
         String path = "beans.xml";
         ApplicationContext context = new ClassPathXmlApplicationContext(path);
-        IndexRequestManager q = (IndexRequestManager) context.getBean("indexRequestManager");
-        q.addPapers();
+        IndexRequestManager i = (IndexRequestManager) context.getBean("indexRequestManager");
+        QueryRequestManager q = context.getBean(QueryRequestManager.class);
+        System.out.print(JSONArray.fromObject(q.searchPaper("肿瘤学")).toString());
+//        i.addPapers(s);
     }
 
     @Test
@@ -209,5 +213,11 @@ public class test {
         System.out.println(buff2/loop);
     }
 
+    @Test
+    void Test5(){
+        byte[] b = {91,123,34,116,105,116,108,101,34,58,32,34,65,83,80,46,78,69,84,32,65,74,65,88,-61,-90,-62,-95,-62,-122,-61,-90,-62,-98,-62,-74,-61,-89,-62,-96,-62,-108,-61,-89,-62,-87,-62,-74,-61,-91,-62,-113,-62,-118,-61,-91,-62,-123,-62,-74,-61,-91,-62,-100,-62,-88,87,101,98,-61,-91,-62,-68,-62,-128,-61,-91,-62,-113,-62,-111,-61,-92,-62,-72,-62,-83,-61,-89,-62,-102,-62,-124,-61,-91,-62,-70,-62,-108,-61,-89,-62,-108,-62,-88};
+        String s = new String(b);
+        System.out.println(s);
+    }
 
 }
