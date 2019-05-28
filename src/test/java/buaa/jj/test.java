@@ -30,14 +30,7 @@ public class test {
         String path = "beans.xml";
         ApplicationContext context = new ClassPathXmlApplicationContext(path);
         IndexRequestManager q = (IndexRequestManager) context.getBean("indexRequestManager");
-        q.addPapers("[{\n" +
-                "    \"name\": \"1\",\n" +
-                "    \"context\": \"2\"\n" +
-                "  },{\n" +
-                "    \"name\" : \"1\",\n" +
-                "    \"context\" : \"2\",\n" +
-                "    \"password\" : \"123\"\n" +
-                "  }]");
+        q.addPapers();
     }
 
     @Test
