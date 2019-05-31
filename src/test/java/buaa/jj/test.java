@@ -27,13 +27,29 @@ import java.io.IOException;
 public class test {
 
     String s = "[{'title': 'ASP.NET AJAX框架研究及其在Web开发中的应用', 'summary': '随着Web技术的发展,越来越多ASP.NET应用程序中引入AJAX技术,以降低服务器负担和解决整页刷新带来的白屏问题。而微软推出的ASP.NET AJAX框架与ASP.NET 2.0编程模型无缝集成,可大大降低程序员开发AJAX程序的难度。首先介绍AJAX引擎原理和ASP.NET AJAX服务器端与客户端架构;继而阐述ASP.NET AJAX在Web站点中的配置方法;最后以工程机械远程定位监控系统的车辆监控模块为实例,引入AJAX功能以实现异步局部更新和定时刷新,从而为用户提供了友好的交互界面。', 'author': [{'name': '仰燕兰', 'organization': '东南大学自动化学院', 'field': '系统工程 地图制图学与地理信息工程'}, {'name': '金晓雪', 'organization': '东南大学自动化学院', 'field': '分布式与并行计算 计算机网络 软件工程 通信与信息系统'}, {'name': '叶桦', 'organization': '东南大学自动化研究所', 'field': '系统工程'}], 'keyword': ['AJAX', 'ASP.NET', 'AJAX', '远程定位监控系统', '异步局部更新', '定时刷新']}]";
+
+    @Test
+    void test(){
+        System.out.print(JSONArray.fromObject("[{'name':'王锦波','organization':'中国农业大学信息与电气工程学院','field':'肿瘤学','expertId':22},{'name':'王莲芝','organization':'中国农业大学信息与电气工程学院','field':'课程与教学论','expertId':23},{'name':'高万林','organization':'中国农业大学信息与电气工程学院','field':'农业经济管理','expertId':24},{'name':'喻健','organization':'中国农业大学信息与电气工程学院','field':'新闻学 编辑出版学','expertId':25},{'name':'喻健','organization':'中国农业大学信息与电气工程学院','field':'新闻学 编辑出版学','expertId':25}]"));
+    }
+
     @Test
     void test1() throws IOException {
         String path = "beans.xml";
         ApplicationContext context = new ClassPathXmlApplicationContext(path);
         IndexRequestManager i = (IndexRequestManager) context.getBean("indexRequestManager");
         QueryRequestManager q = context.getBean(QueryRequestManager.class);
-        System.out.print(JSONArray.fromObject(q.searchPaper("肿瘤学")).toString());
+        System.out.print(JSONArray.fromObject(q.searchPaper("\"一\"")).toString());
+//        i.addPapers(s);
+    }
+
+    @Test
+    void test11() throws IOException {
+        String path = "beans.xml";
+        ApplicationContext context = new ClassPathXmlApplicationContext(path);
+        IndexRequestManager i = (IndexRequestManager) context.getBean("indexRequestManager");
+        QueryRequestManager q = context.getBean(QueryRequestManager.class);
+//        System.out.print(JSONArray.fromObject(q.scrollSearch("DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAADgUWWjYtMGJ1aFJTcUdSSi1EcVNqVE90QQ==")).toString());
 //        i.addPapers(s);
     }
 
@@ -158,9 +174,10 @@ public class test {
         int buff2 = 0;
         int state4 = 0;
         int cd1 = 0;
-        int loop = 10000;
-        for (int i = 0; i < loop; i++) {
-            for (int j = 0; j < 9; j++) {
+        int loop = 100000;
+        int state5 = 0;
+        for (int i = 0; i < loop; ) {
+            for (int j = 0; j < 7; j++) {
                 int k = (int) (Math.random() * 6);
                 System.out.println(k);
                 if (!state[3]) {
@@ -171,15 +188,15 @@ public class test {
                     }
                     if (state[k / 2]) {
                         if (k % 2 == 0)
-                            buff1 += 4;
+                            buff1 += 8;
                         else
-                            buff2 += 4;
+                            buff2 += 8;
                     } else {
                         state[k / 2] = true;
                         if (k % 2 == 0)
-                            buff1 += 3;
+                            buff1 += 8;
                         else
-                            buff2 += 3;
+                            buff2 += 8;
                     }
                     if (state[0] && state[1] && state[2])
                         state[3] = true;
@@ -187,21 +204,30 @@ public class test {
                     k = (int) (Math.random() * 2);
                     System.out.println(k);
                     if (k % 2 == 0) {
-                        buff1 += 4;
+                        buff1 += 8;
                     } else
-                        buff2 += 4;
+                        buff2 += 8;
                 }
                 if (j >= 3) {
                     if (re < 3)
                         re++;
+                    else
+                        state5++;
                     if (cd1 > 0)
                         cd1--;
                 }
-                if (cd1 == 0 && state[3] == true) {
-                    state4++;
-                    buff1 += 4 * 2;
-                    buff2 += 4 * 2;
-                    cd1 = 6;
+                if (cd1 == 0) {
+                    i++;
+                    if(state[3]) {
+                        state4++;
+                        buff1 += 3 * 4;
+                        buff2 += 3 * 4;
+                        cd1 = 6;
+                    } else {
+                        buff1 += 3 * 4;
+                        buff2 += 3 * 4;
+                        cd1 = 6;
+                    }
                     for (int s = 0; s < 4; s++) {
                         state[s] = false;
                     }
@@ -209,6 +235,7 @@ public class test {
             }
         }
         System.out.println(state4);
+        System.out.println(state5/loop);
         System.out.println(buff1/loop);
         System.out.println(buff2/loop);
     }

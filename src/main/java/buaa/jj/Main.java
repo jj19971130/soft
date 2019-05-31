@@ -11,6 +11,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class Main {
     public static void main(String[] args){
-        ContextLoader.getCurrentWebApplicationContext().getBean(IndexRequestManager.class);
+        new ClassPathXmlApplicationContext("beans.xml").start();
     }
 }

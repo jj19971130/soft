@@ -34,37 +34,13 @@ public class IndexRequestManager {
     @Autowired
     RestHighLevelClient client;
 
-    @RequestMapping(value = "paper", method = RequestMethod.POST)
+    @RequestMapping(value = "papers", method = RequestMethod.POST)
     public void addPapers(@RequestBody String body) throws IOException {
         //todo 调用数据库接口
         body = new String(body.getBytes("iso-8859-1"),"utf-8");
-        List<Map<String,Object>> paperList = (List<Map<String,Object>>) JSONArray.fromObject(body);
+        List<Map> paperList = (List<Map>) JSONArray.fromObject(body);
         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
         PaperService paperService = context.getBean(PaperService.class);
-        paperService.insert(JSONArray.fromObject(body));
-        for (Map<String,Object> o:paperList) {
-            IndexRequest request = new IndexRequest("papers").source(o);
-            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            System.out.println(JSONObject.fromObject(response).toString());
-        }
-    }
-
-    @RequestMapping(value = "test",method = RequestMethod.POST)
-    public String test(@RequestBody String body) {
-        for (byte b:body.getBytes()) {
-            System.out.print(b + " ");
-        }
-        System.out.println(" ");
-        return body;
-    }
-
-    void addExpert(@RequestBody String body) throws IOException {
-        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-        PaperService paperService = context.getBean(PaperService.class);
-        List<Map<String,Object>> paperList = (List<Map<String,Object>>) JSONArray.fromObject(body);
-        for (Map<String,Object> o:paperList) {
-            IndexRequest request = new IndexRequest("experts").source(o);
-            client.index(request, RequestOptions.DEFAULT);
-        }
+        paperService.insert(paperList);
     }
 }
