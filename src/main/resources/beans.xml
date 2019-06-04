@@ -7,7 +7,7 @@
 
     <dubbo:application name="jj-es"/>
     <dubbo:registry address="zookeeper://10.128.3.233:2181"/>
-    <dubbo:protocol name="dubbo" port="20879"/>
+    <dubbo:protocol name="dubbo" port="20879" host="10.128.3.233"/>
     <bean id="esService" class="buaa.jj.es.ESServiceImpl"/>
     <dubbo:service interface="buaa.jj.api.ESService" ref="esService"/>
     
