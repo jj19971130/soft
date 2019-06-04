@@ -62,6 +62,29 @@ public class QueryRequestManager {
         return ret;
     }
 
+    public List searchPatent(String s) throws IOException {
+        List ret = new ArrayList();
+        SearchRequest request = new SearchRequest("patents");
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        builder.query(QueryBuilders.simpleQueryStringQuery(s).field("patentName").field("summary")
+                .field("author.field").field("author.organization").field("author.name"));
+        builder.sort("_score", SortOrder.DESC);
+        builder.size(100);
+        request.source(builder);
+        request.scroll(TimeValue.timeValueMinutes(10));
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = response.getHits().getHits();
+        ret.add(response.getScrollId());
+        if (searchHits.length == 0) {
+
+        } else {
+            for (SearchHit hit: searchHits) {
+                ret.add(hit.getSourceAsMap());
+            }
+        }
+        return ret;
+    }
+
     public List scrollSearch(String scrollId,int times) throws IOException {
         List ret = new ArrayList();
         SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);

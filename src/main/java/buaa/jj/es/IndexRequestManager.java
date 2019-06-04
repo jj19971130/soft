@@ -1,6 +1,7 @@
 package buaa.jj.es;
 
 import com.ManageServices.service_interface.PaperService;
+import com.ManageServices.service_interface.PatentService;
 import com.sun.org.apache.xerces.internal.xs.StringList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -25,6 +26,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,14 +35,34 @@ import java.util.Map;
 public class IndexRequestManager {
     @Autowired
     RestHighLevelClient client;
+    @Autowired
+    ApplicationContext context;
+    PaperService paperService;
 
     @RequestMapping(value = "papers", method = RequestMethod.POST)
     public void addPapers(@RequestBody String body) throws IOException {
-        //todo 调用数据库接口
         body = new String(body.getBytes("iso-8859-1"),"utf-8");
         List<Map> paperList = (List<Map>) JSONArray.fromObject(body);
-        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
         PaperService paperService = context.getBean(PaperService.class);
         paperService.insert(paperList);
+    }
+
+    @RequestMapping(value = "patents", method = RequestMethod.POST)
+    public void addPatents(@RequestBody String body) throws UnsupportedEncodingException {
+        body = new String(body.getBytes("iso-8859-1"),"utf-8");
+        List<Map> patentList = (List<Map>) JSONArray.fromObject(body);
+        PatentService patentService = context.getBean(PatentService.class);
+        patentService.insertPatent(patentList);
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    public String[] test(@RequestBody String body) throws UnsupportedEncodingException {
+        body = new String(body.getBytes("iso-8859-1"),"utf-8");
+        List<Map> paperList = (List<Map>) JSONArray.fromObject(body);
+        String json = JSONArray.fromObject(paperList).toString();
+        System.out.println(body);
+        System.out.println(json);
+        String[] strings = {body,json};
+        return strings;
     }
 }

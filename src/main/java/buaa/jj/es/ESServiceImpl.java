@@ -20,4 +20,8 @@ public class ESServiceImpl implements ESService {
     public List scrollSearch(String scrollId,int times) throws IOException {
         return queryRequestManager.scrollSearch(scrollId,times);
     }
+
+    public List searchPatent(String s) throws IOException {
+        return queryRequestManager.searchPatent(s);
+    }
 }

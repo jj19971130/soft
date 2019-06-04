@@ -39,7 +39,7 @@ public class test {
         ApplicationContext context = new ClassPathXmlApplicationContext(path);
         IndexRequestManager i = (IndexRequestManager) context.getBean("indexRequestManager");
         QueryRequestManager q = context.getBean(QueryRequestManager.class);
-        System.out.print(JSONArray.fromObject(q.searchPaper("\"一\"")).toString());
+        System.out.print(JSONArray.fromObject(q.searchPatent("1")).toString());
 //        i.addPapers(s);
     }
 

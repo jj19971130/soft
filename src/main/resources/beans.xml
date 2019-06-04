@@ -12,7 +12,11 @@
     <dubbo:service interface="buaa.jj.api.ESService" ref="esService"/>
     
     <dubbo:reference interface="com.ManageServices.service_interface.PaperService" id="paperService" >
-        <dubbo:method name="insertPaperByBatch" async="true"/>
+        <dubbo:method name="insert" async="true"/>
+    </dubbo:reference>
+
+    <dubbo:reference interface="com.ManageServices.service_interface.PatentService" id="patentService">
+        <dubbo:method name="insertPatent" async="true"/>
     </dubbo:reference>
 
     <bean id="client" class="org.elasticsearch.client.RestHighLevelClient">
